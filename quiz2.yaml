@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webserver-quiz2
+spec:
+  selector:
+    matchLabels:
+      app: webserver-quiz2
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: webserver-quiz2
+    spec:
+      containers:
+        - name: webserver-quiz2
+          image: httpd:alpine
+          ports:
+          - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: webservice-quiz2
+  labels:
+    run: webservice-quiz2
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 31337
+    protocol: TCP
+  selector:
+    app: webserver-quiz2
